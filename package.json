@@ -52,7 +52,7 @@
         "LICENSE"
     ],
     "scripts": {
-        "build": "node node_modules/typescript/bin/tsc -p tsconfig.build.json",
+        "build": "node -e \"const { rmSync } = require('node:fs'); rmSync('dist', { force: true, recursive: true }); rmSync('.cache/tsbuildinfo/tsconfig.build.tsbuildinfo', { force: true })\" && node node_modules/typescript/bin/tsc -p tsconfig.build.json",
         "build:runtime": "npm run build",
         "build:watch": "npm run build -- --watch",
         "changelog:generate": "git cliff --config node_modules/gitcliff-config-nick2bad4u/cliff.toml --github-repo Nick2bad4u/storybook-config-nick2bad4u --output CHANGELOG.md",
