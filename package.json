@@ -1,7 +1,7 @@
 {
     "$schema": "https://www.schemastore.org/package.json",
     "name": "storybook-config-nick2bad4u",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "private": false,
     "description": "Composable Storybook 10 presets and factories for React and Vite projects.",
     "keywords": [
