@@ -41,7 +41,7 @@ export function addons(
 
 /** Storybook preset hook that applies this package's safe Vite merge. */
 export function viteFinal(
-    config: UserConfig,
+    config: Readonly<UserConfig>,
     context: SharedStorybookPresetContext = {}
 ): UserConfig {
     const options = getPresetOptions(context);

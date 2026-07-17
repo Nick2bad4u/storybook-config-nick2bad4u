@@ -1,5 +1,5 @@
 import * as path from "node:path";
-import { objectKeys, objectMapValues } from "ts-extras";
+import { objectEntries, objectKeys } from "ts-extras";
 import { mergeConfig, type UserConfig } from "vite";
 
 /** Storybook fields passed to `viteFinal` hooks. */
@@ -9,7 +9,7 @@ export interface StorybookViteContext {
 
 /** A Vite finalizer compatible with Storybook's Vite builder. */
 export type StorybookViteFinal = (
-    config: UserConfig,
+    config: Readonly<UserConfig>,
     context?: StorybookViteContext
 ) => UserConfig;
 
@@ -24,15 +24,17 @@ export interface StorybookViteOptions {
 const resolveAliases = (
     aliases: Readonly<Record<string, string>>,
     projectRoot: string
-): Record<string, string> =>
-    objectMapValues(
-        aliases,
-        (target) =>
-            path.isAbsolute(target)
-                ? target
-                : path.resolve(projectRoot, target),
-        { strict: false }
-    ) as Record<string, string>;
+): Record<string, string> => {
+    const resolvedAliases: Record<string, string> = {};
+
+    for (const [alias, target] of objectEntries(aliases)) {
+        resolvedAliases[alias] = path.isAbsolute(target)
+            ? target
+            : path.resolve(projectRoot, target);
+    }
+
+    return resolvedAliases;
+};
 
 /** Create a Vite finalizer that merges without removing framework plugins. */
 export function createStorybookViteFinal(
